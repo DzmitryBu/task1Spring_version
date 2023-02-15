@@ -11,7 +11,7 @@
 
 > Логическая модель базы данных
 
-![schema](https://github.com/DzmitryBu/voiting_Spring_with_version/blob/Hibernate/%D0%A1%D1%85%D0%B5%D0%BC%D0%B0.jpg)
+![schema](https://github.com/DzmitryBu/task1Spring_version/blob/55c64302340d5e476a1e18aeee08cfcdec8ecaef/%D0%A1%D1%85%D0%B5%D0%BC%D0%B0.jpg)
 
 
 ## В приложении предусмотрены следующие страницы и функции:
