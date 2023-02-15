@@ -1,6 +1,7 @@
-# Team3. task1. Voting 
+# Team3. task1. Voting
 
- ` Команда проекта:  Дмитрий Булавицкий, Павел Клименко, Анна Микулич`
+` Команда проекта:  Дмитрий Булавицкий, Павел Клименко, Анна Микулич`
+` Завершал проект:  Дмитрий Булавицкий`
 
 Приложение предназначено для проведения голосования по двум номинациям:
 1. Номинация Singer - можно проголосовать только за одного исполнителя.
@@ -10,48 +11,71 @@
 
 > Логическая модель базы данных
 
-![schema](https://github.com/annomik/git-demo-backup/blob/main/Database%20model%20-%20Voting%20new.jpg)
+![schema](https://github.com/DzmitryBu/voiting_Spring_with_version/blob/Hibernate/%D0%A1%D1%85%D0%B5%D0%BC%D0%B0.jpg)
 
 
 ## В приложении предусмотрены следующие страницы и функции:
-## 1. Страница приветствия
-```sh
- (GET) http://host:port/WarFileName/welcome
-  ```
-## 2. Страница исполнителей
+## 1. Страница исполнителей
 На данной странице предусмотрено выполнение следующих действий:
 
- Просмотреть  список исполнителей: 
+Просмотреть  список исполнителей:
 ```sh
  (GET) http://host:port/WarFileName/singer
   ```
-  Добавить, обновить, удалить исполнителя:
-```sh
- (POST)   http://host:port/WarFileName/singer?add=(singer_name) 
- (PUT)    http://host:port/WarFileName/singer?updateId=(singer_id)&newName=(new_singer_name)
- (DELETE) http://host:port/WarFileName/singer?deleteId=(singer_id)
+Просмотреть карточку исполнителя:
+  ```sh
+ (GET) http://host:port/WarFileName/singer/{id}
   ```
-## 3. Страница жанров
+Добавить, обновить, удалить исполнителя. Обновление и удаление производится с проверкой актуальной указанной версией:
+```sh
+ (POST)   http://host:port/WarFileName/singer
+ И необходимо отправить запрос с JSON.
+ Пример: {"name" : "Леонтьев"}
+ 
+ (PUT)    http://host:port/WarFileName/singer/{id}/version/{version}
+ И необходимо отправить запрос с JSON и указать новое имя.
+ Пример: {"name" : "Shakira"}
+ 
+ (DELETE) http://host:port/WarFileName/singer/{id}/version/{version}
+  ```
+## 2. Страница жанров
 На данной странице предусмотрено выполнение следующих действий:
 
-Просмотреть список жанров: 
- ```sh
+Просмотреть  список жанров:
+```sh
  (GET) http://host:port/WarFileName/genre
   ```
- Добавить, обновить, удалить жанр:
+Просмотреть карточку жанра:
   ```sh
- (POST)   http://host:port/WarFileName/genre?add=(genre_name) 
- (PUT)    http://host:port/WarFileName/genre?updateId=(genre_id)&newName=(new_genre_name)
- (DELETE) http://host:port/WarFileName/genre?deleteId=(genre_id)
-  ```  
- ## 4. Страница голосования
+ (GET) http://host:port/WarFileName/genre/{id}
+  ```
+Добавить, обновить, удалить жанр. Обновление и удаление производится с проверкой актуальной указанной версией:
+```sh
+ (POST)   http://host:port/WarFileName/genre
+ И необходимо отправить запрос с JSON.
+ Пример: {"name" : "Рок"}
+ 
+ (PUT)    http://host:port/WarFileName/genre/{id}/version/{version}
+ И необходимо отправить запрос с JSON и указать новое название жанра.
+ Пример: {"name" : "Классика"}
+ 
+ (DELETE) http://host:port/WarFileName/genre/{id}/version/{version}
+  ```
+## 3. Страница голосования
 URL "/vote"  (1 vote singer, 3-5 votes for genres)
 ```sh
- (POST)  http://host:port/WarFileName/vote?singer=(singer_id)&genre=(genre_id)&genre=(genre_id)&genre=(genre_id)&message=(message)&email=(email)
+ (POST)  http://host:port/WarFileName/vote
+ И необходимо отправить запрос с JSON.
+ Пример:
+ {
+    "singerID" : 2,
+ "genresID" : [5, 4, 3],
+  "message" : "Hi",
+   "email" : "*@mail.*"
+   }
  ``` 
- После отправки голоса пользователь получает на электронную почту информацию о своем выборе жанров и исполнителя.
- ## 5. Страница результатов голосования
-  На данной станице можно увидеть текущие результаты голосования:
+## 4. Страница результатов голосования
+На данной станице можно увидеть текущие результаты голосования:
   ```sh
  (GET) http://host:port/WarFileName/result
  ``` 
