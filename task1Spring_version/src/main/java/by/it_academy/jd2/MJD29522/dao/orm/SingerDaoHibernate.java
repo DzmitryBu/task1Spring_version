@@ -67,7 +67,7 @@ public class SingerDaoHibernate implements ISingerDao {
             entityManager = manager.getEntityManager();
             entityManager.getTransaction().begin();
             SingerEntity singerToUpdate = entityManager.find(SingerEntity.class, singerEntity.getId());
-            if(singerToUpdate != null && singerEntity.getVersion().equals(singerToUpdate.getVersion())){
+            if(singerToUpdate != null){
                 entityManager.merge(singerEntity);
             }
             entityManager.getTransaction().commit();
@@ -90,7 +90,7 @@ public class SingerDaoHibernate implements ISingerDao {
             entityManager = manager.getEntityManager();
             entityManager.getTransaction().begin();
             SingerEntity singerToRemoved = entityManager.find(SingerEntity.class, id);
-            if(singerToRemoved != null && singerToRemoved.getVersion().equals(version)){
+            if(singerToRemoved != null){
                 entityManager.remove(singerToRemoved);
             }
             entityManager.getTransaction().commit();

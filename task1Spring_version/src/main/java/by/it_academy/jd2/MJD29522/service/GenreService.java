@@ -83,7 +83,7 @@ public class GenreService implements IGenreService {
                 throw  new IllegalArgumentException("Жанр с именем " + genre.getName() + " для добавления уже существует!");
             }
         }
-        if(genre.getName().isBlank() || genre.getName() == null){
+        if(genre.getName() == null || genre.getName().isBlank()){
             throw new IllegalArgumentException("Имя жанра не может быть пустым");
         }
         if(genre.getName().length() > 255){

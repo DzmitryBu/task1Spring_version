@@ -82,7 +82,7 @@ public class SingerService implements ISingerService {
                 throw  new IllegalArgumentException("Исполнитель с именем " + singer.getName() + " для добавления уже существует!");
             }
         }
-        if(singer.getName().isBlank() || singer.getName() == null){
+        if(singer.getName() == null || singer.getName().isBlank()){
             throw new IllegalArgumentException("Имя исполнителя не может быть пустым");
         }
         if(singer.getName().length() > 255){

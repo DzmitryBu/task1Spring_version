@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/vote")
 public class PostController {
-    private final String EXECUTOR_PARAM = "singer";
-    private final String GENRE_PARAM = "genre";
-    private final String MESSAGE_PARAM = "message";
-    private final String EMAIL = "email";
+
     private final IVoteService service;
     public PostController(IVoteService service) {
         this.service = service;

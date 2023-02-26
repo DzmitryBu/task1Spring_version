@@ -67,7 +67,7 @@ public class GenreDaoHibernate implements IGenreDao {
             entityManager = manager.getEntityManager();
             entityManager.getTransaction().begin();
             GenreEntity genreToUpdate = entityManager.find(GenreEntity.class, genreEntity.getId());
-            if(genreToUpdate != null && genreEntity.getVersion().equals(genreToUpdate.getVersion())){
+            if(genreToUpdate != null){
                 entityManager.merge(genreEntity);
             }
             entityManager.getTransaction().commit();
@@ -90,7 +90,7 @@ public class GenreDaoHibernate implements IGenreDao {
             entityManager = manager.getEntityManager();
             entityManager.getTransaction().begin();
             GenreEntity genreToRemoved = entityManager.find(GenreEntity.class, id);
-            if(genreToRemoved != null && genreToRemoved.getVersion().equals(version)){
+            if(genreToRemoved != null){
                 entityManager.remove(genreToRemoved);
             }
             entityManager.getTransaction().commit();
