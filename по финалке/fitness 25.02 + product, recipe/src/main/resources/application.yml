@@ -17,6 +17,12 @@ spring:
     password: p2ipfyj1akZ2g6hc3fSj # специальный пароль для приложения
     test-connection: true # проверка подключения при старте приложения
     protocol: smtps
+  data:
+    redis:
+      url: http://localhost:8080/api/v1/users/verification
+
+
+
 
 
 

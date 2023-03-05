@@ -1,32 +1,28 @@
 package by.it_academy.fitness.core.exception;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SingleErrorResponse extends RuntimeException{
+public class SingleErrorResponse extends RuntimeException {
 
-    private String logref;
-
-    private String message;
+    private List<Error> errors = new ArrayList<>();
 
     public SingleErrorResponse(String logref, String message) {
-        this.logref = logref;
-        this.message = message;
+        this.errors.add(new Error(logref, message));
+    }
+    public SingleErrorResponse(String message) {
+        this.errors.add(new Error(message));
     }
 
-    public String getLogref() {
-        return logref;
+    public List<Error> getErrors() {
+        return errors;
     }
 
-    public void setLogref(String logref) {
-        this.logref = logref;
+    public void setErrors(List<Error> errors) {
+        this.errors = errors;
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrors(Error error) {
+        this.errors.add(error);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -33,9 +34,9 @@ public class RecipeController {
 
     @RequestMapping(path = "/{uuid}/dt_update/{dt_update}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateProduct(@PathVariable ("uuid") UUID uuid,
-                                   @PathVariable ("dt_update") Long dt_update,
-                                   @RequestBody RecipeForCU recipeForCU){
-        service.updateRecipe(uuid, dt_update, recipeForCU);
+                                           @PathVariable ("dt_update") LocalDateTime dtUpdate,//должно быть LocalDateTime, dtUpdate
+                                           @RequestBody RecipeForCU recipeForCU){
+        service.updateRecipe(uuid, dtUpdate, recipeForCU);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

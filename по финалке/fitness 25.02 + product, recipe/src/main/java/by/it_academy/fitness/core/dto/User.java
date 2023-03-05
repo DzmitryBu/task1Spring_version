@@ -1,7 +1,9 @@
 package by.it_academy.fitness.core.dto;
 
+import by.it_academy.fitness.service.converters.json.LocalDateTimeToLongSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,9 +11,11 @@ public class User {
 
     private UUID uuid;
 
-    private long dtCreate;
+    @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
+    private LocalDateTime dtCreate;
 
-    private long dtUpdate;
+    @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
+    private LocalDateTime dtUpdate;
 
     private String mail;
 
@@ -24,8 +28,8 @@ public class User {
     public User(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate, String mail,
                 String fio, UserRole role, UserStatus status) {
         this.uuid = uuid;
-        this.dtCreate = dtCreate.toEpochSecond(ZoneOffset.UTC);
-        this.dtUpdate = dtUpdate.toEpochSecond(ZoneOffset.UTC);
+        this.dtCreate = dtCreate;
+        this.dtUpdate = dtUpdate;
         this.mail = mail;
         this.fio = fio;
         this.role = UserRole.USER;
@@ -36,11 +40,11 @@ public class User {
         return uuid;
     }
 
-    public long getDt_create() {
+    public LocalDateTime getDtCreate() {
         return dtCreate;
     }
 
-    public long getDt_update() {
+    public LocalDateTime getDtUpdate() {
         return dtUpdate;
     }
 
@@ -60,8 +64,8 @@ public class User {
         return status;
     }
 
-    public void setDt_update(LocalDateTime dtUpdate) {
-        this.dtUpdate = dtUpdate.toEpochSecond(ZoneOffset.UTC);
+    public void setDtUpdate(LocalDateTime dtUpdate) {
+        this.dtUpdate = dtUpdate;
     }
 
     public void setFio(String fio) {

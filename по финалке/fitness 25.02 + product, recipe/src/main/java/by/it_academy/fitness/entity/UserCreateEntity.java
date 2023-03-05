@@ -3,6 +3,9 @@ package by.it_academy.fitness.entity;
 import by.it_academy.fitness.core.dto.UserRole;
 import by.it_academy.fitness.core.dto.UserStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,34 +27,19 @@ public class UserCreateEntity {
     private String fio;
 
     @Column(name = "dt_create")
-    private LocalDateTime dt_create;
+    private LocalDateTime dtCreate;
 
     @Column(name = "dt_update")
     @Version
-    private LocalDateTime dt_update;
+    private LocalDateTime dtUpdate;
 
     @Column(name = "mail")
+    @NotNull
     private String mail;
 
-//    @ManyToOne
-//    @JoinTable(
-//            name="fitness.user_role",
-//            joinColumns=
-//            @JoinColumn(name="user_uuid", referencedColumnName="ID"),
-//            inverseJoinColumns=
-//            @JoinColumn(name="role_ID", referencedColumnName="ID")
-//    )
     @Enumerated(EnumType.ORDINAL)
     private UserRole role;
 
-//    @ManyToOne
-//    @JoinTable(
-//            name="fitness.user_status",
-//            joinColumns=
-//            @JoinColumn(name="user_uuid", referencedColumnName="ID"),
-//            inverseJoinColumns=
-//            @JoinColumn(name="status_ID", referencedColumnName="ID")
-//    )
     @Enumerated(EnumType.ORDINAL)
     private UserStatus status;
 
@@ -63,16 +51,16 @@ public class UserCreateEntity {
 
     public UserCreateEntity(UUID uuid,
                             String fio,
-                            LocalDateTime dt_create,
-                            LocalDateTime dt_update,
+                            LocalDateTime dtCreate,
+                            LocalDateTime dtUpdate,
                             String mail,
                             UserRole role,
                             UserStatus status,
                             String password) {
         this.uuid = uuid;
         this.fio = fio;
-        this.dt_create = dt_create;
-        this.dt_update = dt_update;
+        this.dtCreate = dtCreate;
+        this.dtUpdate = dtUpdate;
         this.mail = mail;
         this.role = role;
         this.status = status;
@@ -88,11 +76,11 @@ public class UserCreateEntity {
     }
 
     public LocalDateTime getDtCreate() {
-        return dt_create;
+        return dtCreate;
     }
 
     public LocalDateTime getDtUpdate() {
-        return dt_update;
+        return dtUpdate;
     }
 
     public String getMail() {
@@ -119,8 +107,12 @@ public class UserCreateEntity {
         this.fio = fio;
     }
 
-    public void setDt_update(LocalDateTime dt_update) {
-        this.dt_update = dt_update;
+    public void setDtCreate(LocalDateTime dtCreate) {
+        this.dtCreate = dtCreate;
+    }
+
+    public void setDtUpdate(LocalDateTime dtUpdate) {
+        this.dtUpdate = dtUpdate;
     }
 
     public void setRole(UserRole role) {
@@ -142,14 +134,14 @@ public class UserCreateEntity {
         if (o == null || getClass() != o.getClass()) return false;
         UserCreateEntity that = (UserCreateEntity) o;
         return Objects.equals(uuid, that.uuid) && Objects.equals(fio, that.fio)
-                && Objects.equals(dt_create, that.dt_create) && Objects.equals(dt_update, that.dt_update)
+                && Objects.equals(dtCreate, that.dtCreate) && Objects.equals(dtUpdate, that.dtUpdate)
                 && Objects.equals(mail, that.mail) && role == that.role
                 && status == that.status && Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fio, dt_create, dt_update, mail, role, status, password);
+        return Objects.hash(uuid, fio, dtCreate, dtUpdate, mail, role, status, password);
     }
 
     @Override
@@ -157,8 +149,8 @@ public class UserCreateEntity {
         return "UserEntity{" +
                 "uuid=" + uuid +
                 ", fio='" + fio + '\'' +
-                ", dt_create=" + dt_create +
-                ", dt_update=" + dt_update +
+                ", dt_create=" + dtCreate +
+                ", dt_update=" + dtUpdate +
                 ", mail='" + mail + '\'' +
                 ", role=" + role +
                 ", status=" + status +

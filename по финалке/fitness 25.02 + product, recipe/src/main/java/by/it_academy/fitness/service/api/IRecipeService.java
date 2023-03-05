@@ -4,6 +4,7 @@ import by.it_academy.fitness.core.dto.Page;
 import by.it_academy.fitness.core.dto.Recipe;
 import by.it_academy.fitness.core.dto.RecipeForCU;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface IRecipeService {
@@ -12,7 +13,7 @@ public interface IRecipeService {
 
     Page getPageRecipes(int page, int size);
 
-    void updateRecipe(UUID uuid, long dt_update, RecipeForCU recipeForCU);
+    void updateRecipe(UUID uuid, LocalDateTime dt_update, RecipeForCU recipeForCU);
 
 
 

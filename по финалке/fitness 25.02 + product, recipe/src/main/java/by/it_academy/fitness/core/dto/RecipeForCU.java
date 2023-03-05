@@ -1,11 +1,7 @@
 package by.it_academy.fitness.core.dto;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 public class RecipeForCU {
 

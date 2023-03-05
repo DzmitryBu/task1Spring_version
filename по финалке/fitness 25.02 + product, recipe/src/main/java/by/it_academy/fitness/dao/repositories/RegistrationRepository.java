@@ -2,11 +2,12 @@ package by.it_academy.fitness.dao.repositories;
 
 import by.it_academy.fitness.entity.UserCreateEntity;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
+
 import java.util.Optional;
 import java.util.UUID;
 
-public interface AdminRepository extends CrudRepository <UserCreateEntity, UUID>, PagingAndSortingRepository <UserCreateEntity, UUID> {
+public interface RegistrationRepository extends CrudRepository<UserCreateEntity, UUID> {
+        Optional<UserCreateEntity> findById(UUID uuid);
 
         Optional<UserCreateEntity> findByMail(String mail);
 

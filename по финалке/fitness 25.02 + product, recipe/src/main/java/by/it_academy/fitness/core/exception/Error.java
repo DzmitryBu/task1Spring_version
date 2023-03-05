@@ -12,6 +12,10 @@ public class Error {
         this.message = message;
         this.logref = logref;
     }
+    public Error(String message) {
+        this.message = message;
+        this.logref = "error";
+    }
 
     public String getMessage() {
         return message;

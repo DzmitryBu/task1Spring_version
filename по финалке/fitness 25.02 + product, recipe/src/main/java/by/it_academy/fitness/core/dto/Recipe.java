@@ -1,37 +1,40 @@
 package by.it_academy.fitness.core.dto;
 
-import by.it_academy.fitness.entity.IngredientEntity;
+import by.it_academy.fitness.service.converters.json.LocalDateTimeToLongSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Recipe {
     private UUID uuid;
-    private long dtCreate;
+    @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
+    private LocalDateTime dtCreate;
 
-    private long dtUpdate;
+    @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
+    private LocalDateTime dtUpdate;
     private String title;
     private List<Ingredient> composition;
 
     private int weight;
     private int calories;
-    private double proteins;
-    private double fats;
-    private double carbohydrates;
+    private BigDecimal proteins;
+    private BigDecimal fats;
+    private BigDecimal carbohydrates;
 
     public Recipe(UUID uuid,
-                  long dtCreate,
-                  long dtUpdate,
+                  LocalDateTime dtCreate,
+                  LocalDateTime dtUpdate,
                   String title,
                   List<Ingredient> composition,
                   int weight,
                   int calories,
-                  double proteins,
-                  double fats,
-                  double carbohydrates) {
+                  BigDecimal proteins,
+                  BigDecimal fats,
+                  BigDecimal carbohydrates) {
         this.uuid = uuid;
         this.dtCreate = dtCreate;
         this.dtUpdate = dtUpdate;
@@ -47,10 +50,10 @@ public class Recipe {
     public UUID getUuid() {
         return uuid;
     }
-    public long getDtCreate() {
+    public LocalDateTime getDtCreate() {
         return dtCreate;
     }
-    public long getDtUpdate() {
+    public LocalDateTime getDtUpdate() {
         return dtUpdate;
     }
     public String getTitle() {
@@ -65,13 +68,13 @@ public class Recipe {
     public int getCalories() {
         return calories;
     }
-    public double getProteins() {
+    public BigDecimal getProteins() {
         return proteins;
     }
-    public double getFats() {
+    public BigDecimal getFats() {
         return fats;
     }
-    public double getCarbohydrates() {
+    public BigDecimal getCarbohydrates() {
         return carbohydrates;
     }
 
@@ -80,7 +83,7 @@ public class Recipe {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Recipe recipe = (Recipe) o;
-        return dtCreate == recipe.dtCreate && dtUpdate == recipe.dtUpdate && weight == recipe.weight && calories == recipe.calories && Double.compare(recipe.proteins, proteins) == 0 && Double.compare(recipe.fats, fats) == 0 && Double.compare(recipe.carbohydrates, carbohydrates) == 0 && Objects.equals(uuid, recipe.uuid) && Objects.equals(title, recipe.title) && Objects.equals(composition, recipe.composition);
+        return dtCreate == recipe.dtCreate && dtUpdate == recipe.dtUpdate && weight == recipe.weight && calories == recipe.calories && Objects.equals(uuid, recipe.uuid) && Objects.equals(title, recipe.title) && Objects.equals(composition, recipe.composition) && Objects.equals(proteins, recipe.proteins) && Objects.equals(fats, recipe.fats) && Objects.equals(carbohydrates, recipe.carbohydrates);
     }
 
     @Override
@@ -106,15 +109,15 @@ public class Recipe {
 
     public  static class RecipeBuilder{
         private UUID uuid;
-        private long dtCreate;
-        private long dtUpdate;
+        private LocalDateTime dtCreate;
+        private LocalDateTime dtUpdate;
         private String title;
         private List<Ingredient> composition;
         private int weight;
         private int calories;
-        private double proteins;
-        private double fats;
-        private double carbohydrates;
+        private BigDecimal proteins;
+        private BigDecimal fats;
+        private BigDecimal carbohydrates;
 
         private RecipeBuilder() {
         }
@@ -128,12 +131,12 @@ public class Recipe {
         }
 
         public RecipeBuilder setDtCreate(LocalDateTime dtCreate) {
-            this.dtCreate = dtCreate.toEpochSecond(ZoneOffset.UTC);
+            this.dtCreate = dtCreate;
             return this;
         }
 
         public RecipeBuilder setDtUpdate(LocalDateTime dtUpdate) {
-            this.dtUpdate = dtUpdate.toEpochSecond(ZoneOffset.UTC);
+            this.dtUpdate = dtUpdate;
             return this;
         }
 
@@ -157,17 +160,17 @@ public class Recipe {
             return this;
         }
 
-        public RecipeBuilder setProteins(double proteins) {
+        public RecipeBuilder setProteins(BigDecimal proteins) {
             this.proteins = proteins;
             return this;
         }
 
-        public RecipeBuilder setFats(double fats) {
+        public RecipeBuilder setFats(BigDecimal fats) {
             this.fats = fats;
             return this;
         }
 
-        public RecipeBuilder setCarbohydrates(double carbohydrates) {
+        public RecipeBuilder setCarbohydrates(BigDecimal carbohydrates) {
             this.carbohydrates = carbohydrates;
             return this;
         }

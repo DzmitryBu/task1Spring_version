@@ -1,15 +1,18 @@
 package by.it_academy.fitness.core.dto;
 
+import by.it_academy.fitness.service.converters.json.LocalDateTimeToLongSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Product {
     private UUID uuid;
-    private long dtCreate;
-
-    private long dtUpdate;
+    @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
+    private LocalDateTime dtCreate;
+    @JsonSerialize(using = LocalDateTimeToLongSerializer.class)
+    private LocalDateTime dtUpdate;
     private String title;
     private int weight;
     private int calories;
@@ -21,8 +24,8 @@ public class Product {
     }
 
     public Product(UUID uuid,
-                   long dtCreate,
-                   long dtUpdate,
+                   LocalDateTime dtCreate,
+                   LocalDateTime dtUpdate,
                    String title,
                    int weight,
                    int calories,
@@ -44,11 +47,11 @@ public class Product {
         return uuid;
     }
 
-    public long getDtCreate() {
+    public LocalDateTime getDtCreate() {
         return dtCreate;
     }
 
-    public long getDtUpdate() {
+    public LocalDateTime getDtUpdate() {
         return dtUpdate;
     }
 
@@ -106,8 +109,8 @@ public class Product {
 
     public  static class ProductBuilder{
         private UUID uuid;
-        private long dtCreate;
-        private long dtUpdate;
+        private LocalDateTime dtCreate;
+        private LocalDateTime dtUpdate;
         private String title;
         private int weight;
         private int calories;
@@ -126,13 +129,13 @@ public class Product {
             return this;
         }
 
-        public ProductBuilder setDt_create(LocalDateTime dtCreate) {
-            this.dtCreate = dtCreate.toEpochSecond(ZoneOffset.UTC);
+        public ProductBuilder setDtCreate(LocalDateTime dtCreate) {
+            this.dtCreate = dtCreate;
             return this;
         }
 
-        public ProductBuilder setDt_update(LocalDateTime dtUpdate) {
-            this.dtUpdate = dtUpdate.toEpochSecond(ZoneOffset.UTC);
+        public ProductBuilder setDtUpdate(LocalDateTime dtUpdate) {
+            this.dtUpdate = dtUpdate;
             return this;
         }
 

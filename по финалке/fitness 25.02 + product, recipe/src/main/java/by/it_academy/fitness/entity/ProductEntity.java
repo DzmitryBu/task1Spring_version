@@ -102,12 +102,12 @@ public class ProductEntity {
         this.uuid = uuid;
     }
 
-    public void setDt_create(LocalDateTime dt_create) {
-        this.dtCreate = dt_create;
+    public void setDtCreate(LocalDateTime dtCreate) {
+        this.dtCreate = dtCreate;
     }
 
-    public void setDt_update(LocalDateTime dt_update) {
-        this.dtUpdate = dt_update;
+    public void setDtUpdate(LocalDateTime dtUpdate) {
+        this.dtUpdate = dtUpdate;
     }
 
     public void setTitle(String title) {
@@ -154,8 +154,8 @@ public class ProductEntity {
     public String toString() {
         return "ProductEntity{" +
                 "uuid=" + uuid +
-                ", dt_create=" + dtCreate +
-                ", dt_update=" + dtUpdate +
+                ", dtCreate=" + dtCreate +
+                ", dtUpdate=" + dtUpdate +
                 ", title='" + title + '\'' +
                 ", weight=" + weight +
                 ", calories=" + calories +

@@ -5,7 +5,6 @@ import by.it_academy.fitness.core.dto.User;
 import by.it_academy.fitness.core.dto.UserLogin;
 import by.it_academy.fitness.core.dto.UserRegistration;
 import by.it_academy.fitness.service.api.IRegistrationService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +21,8 @@ public class RegistrationController {
     }
 
      @RequestMapping(path = "/registration", method = RequestMethod.POST)
-     public ResponseEntity<?> addUser(@RequestBody UserRegistration user, HttpServletRequest request) {
-         int urlLength = request.getRequestURL().toString().length();
-        String url = request.getRequestURL().delete(urlLength - 13, urlLength).toString();
-         service.addUser(user, url);
+     public ResponseEntity<?> addUser(@RequestBody UserRegistration user) {
+         service.addUser(user);
          return ResponseEntity.status(HttpStatus.CREATED).build();
      }
 

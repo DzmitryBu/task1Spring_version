@@ -4,6 +4,7 @@ import by.it_academy.fitness.core.dto.Page;
 import by.it_academy.fitness.core.dto.User;
 import by.it_academy.fitness.core.dto.UserCreate;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -13,9 +14,8 @@ public interface IUserService {
 
     Page getPageUsers(int page, int size);
 
-    void updateUser(UUID uuid, long dt_update, UserCreate userCreate);
+    void updateUser(UUID uuid, LocalDateTime dt_update, UserCreate userCreate);
 
     User getCard(UUID uuid);
 
-    void validation(UserCreate userCreate);
 }

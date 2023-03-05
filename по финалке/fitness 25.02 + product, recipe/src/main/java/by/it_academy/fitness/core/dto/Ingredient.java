@@ -1,19 +1,19 @@
 package by.it_academy.fitness.core.dto;
 
+import java.math.BigDecimal;
 import java.util.Objects;
-import java.util.UUID;
 
 public class Ingredient {
     private Product product;
 
     private int weight;
 
-    private int calories;
-    private double proteins;
-    private double fats;
-    private double carbohydrates;
+    private BigDecimal calories;
+    private BigDecimal proteins;
+    private BigDecimal fats;
+    private BigDecimal carbohydrates;
 
-    public Ingredient(Product product, int weight, int calories, double proteins, double fats, double carbohydrates) {
+    public Ingredient(Product product, int weight, BigDecimal calories, BigDecimal proteins, BigDecimal fats, BigDecimal carbohydrates) {
         this.product = product;
         this.weight = weight;
         this.calories = calories;
@@ -30,19 +30,19 @@ public class Ingredient {
         return weight;
     }
 
-    public int getCalories() {
+    public BigDecimal getCalories() {
         return calories;
     }
 
-    public double getProteins() {
+    public BigDecimal getProteins() {
         return proteins;
     }
 
-    public double getFats() {
+    public BigDecimal getFats() {
         return fats;
     }
 
-    public double getCarbohydrates() {
+    public BigDecimal getCarbohydrates() {
         return carbohydrates;
     }
 
@@ -54,19 +54,19 @@ public class Ingredient {
         this.weight = weight;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(BigDecimal calories) {
         this.calories = calories;
     }
 
-    public void setProteins(double proteins) {
+    public void setProteins(BigDecimal proteins) {
         this.proteins = proteins;
     }
 
-    public void setFats(double fats) {
+    public void setFats(BigDecimal fats) {
         this.fats = fats;
     }
 
-    public void setCarbohydrates(double carbohydrates) {
+    public void setCarbohydrates(BigDecimal carbohydrates) {
         this.carbohydrates = carbohydrates;
     }
 
@@ -75,7 +75,7 @@ public class Ingredient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ingredient that = (Ingredient) o;
-        return weight == that.weight && calories == that.calories && Double.compare(that.proteins, proteins) == 0 && Double.compare(that.fats, fats) == 0 && Double.compare(that.carbohydrates, carbohydrates) == 0 && Objects.equals(product, that.product);
+        return weight == that.weight && calories == that.calories && Objects.equals(product, that.product) && Objects.equals(proteins, that.proteins) && Objects.equals(fats, that.fats) && Objects.equals(carbohydrates, that.carbohydrates);
     }
 
     @Override

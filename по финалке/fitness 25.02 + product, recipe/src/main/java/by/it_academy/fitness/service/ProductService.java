@@ -2,67 +2,57 @@ package by.it_academy.fitness.service;
 
 import by.it_academy.fitness.core.dto.Page;
 import by.it_academy.fitness.core.dto.Product;
-import by.it_academy.fitness.core.exception.MultipleErrorResponse;
-import by.it_academy.fitness.core.exception.MyError;
 import by.it_academy.fitness.core.exception.SingleErrorResponse;
 import by.it_academy.fitness.dao.repositories.ProductRepository;
 import by.it_academy.fitness.entity.ProductEntity;
 import by.it_academy.fitness.service.api.IProductService;
+import by.it_academy.fitness.service.validators.api.IValidator;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.PageRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ProductService implements IProductService {
-
     private final ProductRepository repository;
+    private final ConversionService conversionService;
+    private final IValidator <Product> validator;
 
-    public ProductService(ProductRepository repository) {
+    public ProductService(ProductRepository repository, ConversionService conversionService, IValidator <Product> validator) {
         this.repository = repository;
+        this.conversionService = conversionService;
+        this.validator = validator;
     }
     @Override
     public void add(Product product) {
         if(product == null){
-            throw new SingleErrorResponse("error", "Заполните форму для регистрации нового пользователя.");
+            throw new SingleErrorResponse("Заполните форму для регистрации нового пользователя.");
         }
-        validation(product);
+        if(repository.findByTitle(product.getTitle()).isPresent()){
+            throw new SingleErrorResponse("Продукт с таким названием уже существует.");
+        }
+
+        validator.validation(product);
 
         LocalDateTime dtCreate = LocalDateTime.now();
-        LocalDateTime dtUpdate = dtCreate;
-        ProductEntity productEntity = new ProductEntity(UUID.randomUUID(),
-                dtCreate,
-                dtUpdate,
-                product.getTitle(),
-                product.getWeight(),
-                product.getCalories(),
-                product.getProteins(),
-                product.getFats(),
-                product.getCarbohydrates());
+        ProductEntity productEntity = conversionService.convert(product, ProductEntity.class);
+        productEntity.setDtCreate(dtCreate);
+        productEntity.setDtUpdate(dtCreate);
         repository.save(productEntity);
     }
 
     @Override
     public Page<Product> getPageProducts(int page, int size) {
-
-//        Product.ProductBuilder productBuilder = Product.ProductBuilder.create();
         org.springframework.data.domain.Page<ProductEntity> productEntityPage = repository.findAll(PageRequest.of(page, size));
 
         List<ProductEntity> productEntities = productEntityPage.toList();
         List<Product> products = new ArrayList<>();
 
         for (ProductEntity productEntity : productEntities) {
-            products.add(productEntityToProduct(productEntity));
-//                    productBuilder.setUuid(productEntity.getUuid())
-//                    .setDt_create(productEntity.getDtCreate())
-//                    .setDt_update(productEntity.getDtUpdate())
-//                    .setTitle(productEntity.getTitle())
-//                    .setWeight(productEntity.getWeight())
-//                    .setCalories(productEntity.getCalories())
-//                    .setProteins(productEntity.getProteins())
-//                    .setFats(productEntity.getFats())
-//                    .setCarbohydrates(productEntity.getCarbohydrates()).build());
+            products.add(conversionService.convert(productEntity, Product.class));
         }
 
         Page<Product> pageOfProduct = new Page<>(productEntityPage.getNumber(),
@@ -77,24 +67,27 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void updateProduct(UUID uuid, long dtUpdate, Product product) {
+    public void updateProduct(UUID uuid, LocalDateTime dtUpdate, Product product) {
         if(uuid == null || product == null){
-            throw new SingleErrorResponse("error","Не переданы параметры для обновления");
+            throw new SingleErrorResponse("Не переданы параметры для обновления");
         }
-        validation(product);
+        validator.validation(product);
 
-        if(repository.findById(uuid).isEmpty()){
-            throw new SingleErrorResponse("error","Такого продукта для обновления не существует");
-        }
+        Optional <ProductEntity> optionalProductEntityUUID = repository.findById(uuid);
+        Optional <ProductEntity> optionalProductEntityTitle = repository.findByTitle(product.getTitle());
 
-        ProductEntity productEntity = repository.findById(uuid).get();
-
-        if(productEntity.getDtUpdate().toEpochSecond(ZoneOffset.UTC) != (dtUpdate)){
-            throw new SingleErrorResponse("error", "У вас не актуальная версия");
+        if(optionalProductEntityUUID.isEmpty()){
+            throw new SingleErrorResponse("Такого продукта для обновления не существует");
         }
 
-        if(repository.findByTitle(product.getTitle()).isPresent() && !repository.findByTitle(product.getTitle()).get().getUuid().equals(uuid)){
-            throw new SingleErrorResponse("error", "Указанное название продукта уже используется.");
+        ProductEntity productEntity = optionalProductEntityUUID.get();
+
+        if(!productEntity.getDtUpdate().equals(dtUpdate)){
+            throw new SingleErrorResponse("У вас не актуальная версия");
+        }
+
+        if(optionalProductEntityTitle.isPresent() && !optionalProductEntityTitle.get().getUuid().equals(uuid)){
+            throw new SingleErrorResponse("Указанное название продукта уже используется.");
         }
         productEntity.setTitle(product.getTitle());
         productEntity.setWeight(product.getWeight());
@@ -104,100 +97,12 @@ public class ProductService implements IProductService {
         productEntity.setCarbohydrates(product.getCarbohydrates());
         repository.save(productEntity);
     }
-    public Product productEntityToProduct (ProductEntity productEntity) {
-        Product.ProductBuilder productBuilder = Product.ProductBuilder.create();
-
-        Product product = productBuilder.setUuid(productEntity.getUuid())
-                .setDt_create(productEntity.getDtCreate())
-                .setDt_update(productEntity.getDtUpdate())
-                .setTitle(productEntity.getTitle())
-                .setWeight(productEntity.getWeight())
-                .setCalories(productEntity.getCalories())
-                .setProteins(productEntity.getProteins())
-                .setFats(productEntity.getFats())
-                .setCarbohydrates(productEntity.getCarbohydrates()).build();
-        return product;
-    }
 
     public ProductEntity getProductEntity (UUID uuid){
-        if(repository.findById(uuid).isEmpty()){
-            throw new SingleErrorResponse("error", "Продукта с указанным uuid не найдено.");
+        Optional <ProductEntity> optionalProductEntityUUID = repository.findById(uuid);
+        if(optionalProductEntityUUID.isEmpty()){
+            throw new SingleErrorResponse("Продукта с указанным uuid не найдено.");
         }
-        return repository.findById(uuid).get();
-    }
-
-    public void validation(Product product){
-        MultipleErrorResponse multipleError = new MultipleErrorResponse();
-
-        if(product.getTitle() == null || product.getTitle().isBlank()){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не заполнено.", "title"));
-        }
-        if(product.getWeight() == 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть равно 0.", "weight"));
-        }
-        if(product.getWeight() < 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть отрицательным.", "weight"));
-        }
-        if(product.getCalories() == 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть равно 0.", "calories"));
-        }
-        if(product.getCalories() < 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть отрицательным.", "calories"));
-        }
-        if(product.getProteins() == 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть равно 0.", "proteins"));
-        }
-        if(product.getProteins() < 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть отрицательным.", "proteins"));
-        }
-        if(product.getFats() < 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть отрицательным.", "fats"));
-        }
-        if(product.getCarbohydrates() == 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть равно 0.", "carbohydrates"));
-        }
-        if(product.getCarbohydrates() < 0){
-            if(multipleError.getLogref() == null){
-                multipleError.setLogref("Проверьте введенные данные!");
-            }
-            multipleError.setErrors(new MyError("Поле не может быть отрицательным.", "carbohydrates"));
-        }
-
-//        if(repository.findByTitle(product.getTitle()).isPresent()){
-//            if(multipleError.getLogref() == null){
-//                multipleError.setLogref("Проверьте введенные данные!");
-//            }
-//            multipleError.setErrors(new MyError("Продукт с таким названием уже существует.", "title"));
-//        }
-        if(multipleError.getErrors().size()>0){
-            throw multipleError;
-        }
+        return optionalProductEntityUUID.get();
     }
 }

@@ -7,14 +7,12 @@ import java.util.UUID;
 
 public interface IRegistrationService {
 
-    void addUser(UserRegistration userRegistration, String url);
+    void addUser(UserRegistration userRegistration);
 
     void verification(String email, String code);
 
     void loging(UserLogin userLogin);
 
     User getCard(UUID uuid);
-
-    void validation (UserRegistration userRegistration);
 
 }

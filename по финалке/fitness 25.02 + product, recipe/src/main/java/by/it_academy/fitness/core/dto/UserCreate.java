@@ -1,7 +1,6 @@
 package by.it_academy.fitness.core.dto;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,9 +8,9 @@ public class UserCreate {
 
     private UUID uuid;
 
-    private long dt_create;
+    private LocalDateTime dtCreate;
 
-    private long dt_update;
+    private LocalDateTime dtUpdate;
 
     private String mail;
 
@@ -25,11 +24,11 @@ public class UserCreate {
     public UserCreate() {
     }
 
-    public UserCreate(UUID uuid, LocalDateTime dt_create, LocalDateTime dt_update, String mail,
+    public UserCreate(UUID uuid, LocalDateTime dtCreate, LocalDateTime dtUpdate, String mail,
                       String fio, UserRole role, UserStatus status, String password) {
         this.uuid = uuid;
-        this.dt_create = dt_create.toEpochSecond(ZoneOffset.UTC);
-        this.dt_update = dt_update.toEpochSecond(ZoneOffset.UTC);
+        this.dtCreate = dtCreate;
+        this.dtUpdate = dtUpdate;
         this.mail = mail;
         this.fio = fio;
         this.role = UserRole.USER;
@@ -41,12 +40,12 @@ public class UserCreate {
         return uuid;
     }
 
-    public long getDt_create() {
-        return dt_create;
+    public LocalDateTime getDtCreate() {
+        return dtCreate;
     }
 
-    public long getDt_update() {
-        return dt_update;
+    public LocalDateTime getDtUpdate() {
+        return dtUpdate;
     }
 
     public String getMail() {
@@ -69,8 +68,8 @@ public class UserCreate {
         return password;
     }
 
-    public void setDt_update(LocalDateTime dt_update) {
-        this.dt_update = dt_update.toEpochSecond(ZoneOffset.UTC);
+    public void setDtUpdate(LocalDateTime dtUpdate) {
+        this.dtUpdate = dtUpdate;
     }
 
     public void setFio(String fio) {
@@ -94,20 +93,20 @@ public class UserCreate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserCreate that = (UserCreate) o;
-        return Objects.equals(uuid, that.uuid) && Objects.equals(dt_create, that.dt_create) && Objects.equals(dt_update, that.dt_update) && Objects.equals(mail, that.mail) && Objects.equals(fio, that.fio) && role == that.role && status == that.status && Objects.equals(password, that.password);
+        return Objects.equals(uuid, that.uuid) && Objects.equals(dtCreate, that.dtCreate) && Objects.equals(dtUpdate, that.dtUpdate) && Objects.equals(mail, that.mail) && Objects.equals(fio, that.fio) && role == that.role && status == that.status && Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, dt_create, dt_update, mail, fio, role, status, password);
+        return Objects.hash(uuid, dtCreate, dtUpdate, mail, fio, role, status, password);
     }
 
     @Override
     public String toString() {
         return "UserCreate{" +
                 "uuid=" + uuid +
-                ", dt_create=" + dt_create +
-                ", dt_update=" + dt_update +
+                ", dt_create=" + dtCreate +
+                ", dt_update=" + dtUpdate +
                 ", mail='" + mail + '\'' +
                 ", fio='" + fio + '\'' +
                 ", role=" + role +
